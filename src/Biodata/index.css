@@ -1,0 +1,15 @@
+.bGround{
+    border: 10px solid orange;
+    height: auto;
+    width: 500px;
+    padding: 40px;
+    margin-left: 250px;
+    margin-top: 60px;
+    font-size: 20px;
+}
+.hEadsty{
+    text-align: center;
+    font-size: 24px;
+    color: firebrick;
+    border-bottom: 1px solid brown;
+}
