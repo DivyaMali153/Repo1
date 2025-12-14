@@ -1,22 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-/* ================= TYPES ================= */
-
+/* ---------- TYPES ---------- */
 type KakaKaku = {
   काका: string;
   काकू: string;
 };
 
-type BahiniPahune = {
+type BahinPahune = {
   बहिण: string;
   पाहुणे: string;
 };
 
-type SimpleArrayKeys = "भाऊ" | "मामा" | "इतर";
-
-type BiodataState = {
+type Biodata = {
   नाव: string;
   जन्मतारीख: string;
   जन्मवेळ: string;
@@ -32,22 +29,18 @@ type BiodataState = {
   आई: string;
   आजी: string;
   आजोबा: string;
-
   काका: KakaKaku[];
-  बहिणी: BahiniPahune[];
+  बहिणी: BahinPahune[];
   भाऊ: string[];
   मामा: string[];
   इतर: string[];
-
   पत्ता: string;
 };
 
-/* ================= COMPONENT ================= */
+export default function BiodataFormMarathi(): JSX.Element {
+  const [showPreview, setShowPreview] = useState<boolean>(false);
 
-export default function BiodataFormMarathi() {
-  const [showPreview, setShowPreview] = useState(false);
-
-  const [data, setData] = useState<BiodataState>({
+  const [data, setData] = useState<Biodata>({
     नाव: "",
     जन्मतारीख: "",
     जन्मवेळ: "",
@@ -63,50 +56,40 @@ export default function BiodataFormMarathi() {
     आई: "",
     आजी: "",
     आजोबा: "",
-
     काका: [{ काका: "", काकू: "" }],
     बहिणी: [{ बहिण: "", पाहुणे: "" }],
     भाऊ: [""],
     मामा: [""],
     इतर: [""],
-
     पत्ता: ""
   });
 
-  /* ================= HANDLERS ================= */
-
-  const handleChange = <K extends keyof BiodataState>(
-    key: K,
-    value: BiodataState[K]
-  ) => {
+  /* ---------- HANDLERS ---------- */
+  const handleChange = (key: keyof Biodata, value: string): void => {
     setData({ ...data, [key]: value });
   };
 
   const handleArrayChange = (
-    key: SimpleArrayKeys,
+    key: "भाऊ" | "मामा" | "इतर",
     index: number,
     value: string
-  ) => {
+  ): void => {
     const updated = [...data[key]];
     updated[index] = value;
     setData({ ...data, [key]: updated });
-  };
-
-  const addField = (key: SimpleArrayKeys) => {
-    setData({ ...data, [key]: [...data[key], ""] });
   };
 
   const handleKakaKakuChange = (
     index: number,
     field: keyof KakaKaku,
     value: string
-  ) => {
+  ): void => {
     const updated = [...data.काका];
     updated[index][field] = value;
     setData({ ...data, काका: updated });
   };
 
-  const addKakaKaku = () => {
+  const addKakaKaku = (): void => {
     setData({
       ...data,
       काका: [...data.काका, { काका: "", काकू: "" }]
@@ -115,22 +98,26 @@ export default function BiodataFormMarathi() {
 
   const handleBahiniPahuneChange = (
     index: number,
-    field: keyof BahiniPahune,
+    field: keyof BahinPahune,
     value: string
-  ) => {
+  ): void => {
     const updated = [...data.बहिणी];
     updated[index][field] = value;
     setData({ ...data, बहिणी: updated });
   };
 
-  const addBahiniPahune = () => {
+  const addBahiniPahune = (): void => {
     setData({
       ...data,
       बहिणी: [...data.बहिणी, { बहिण: "", पाहुणे: "" }]
     });
   };
 
-  const downloadPDF = () => {
+  const addField = (key: "भाऊ" | "मामा" | "इतर"): void => {
+    setData({ ...data, [key]: [...data[key], ""] });
+  };
+
+  const downloadPDF = (): void => {
     const input = document.getElementById("biodata-preview");
     if (!input) return;
 
@@ -144,9 +131,8 @@ export default function BiodataFormMarathi() {
     });
   };
 
-  /* ================= STYLES ================= */
-
-  const inputStyle = {
+  /* ---------- STYLES ---------- */
+  const inputStyle: React.CSSProperties = {
     width: "100%",
     padding: "10px",
     marginBottom: "8px",
@@ -154,166 +140,213 @@ export default function BiodataFormMarathi() {
     border: "1px solid #ccc"
   };
 
-  const sectionStyle = { marginBottom: "12px" };
+  const sectionStyle: React.CSSProperties = { marginBottom: "12px" };
 
-  /* ================= JSX ================= */
-
+  /* ---------- JSX ---------- */
   return (
     <div style={{ padding: "20px" }}>
-      {/* FORM */}
       {!showPreview && (
-        <div style={{ maxWidth: "650px", margin: "auto" }}>
-          <h2 style={{ textAlign: "center" }}>मराठी बायोडाटा फॉर्म</h2>
+        <div
+          style={{
+            maxWidth: "650px",
+            margin: "auto",
+            padding: "20px",
+            borderRadius: "12px",
+            backgroundImage: "url('./src/Biodata/flower.jpg')",
+            backgroundSize: "cover"
+          }}
+        >
+          <div style={{ background: "rgba(255,255,255,0.9)", padding: "20px" }}>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src="./src/Biodata/ganpati.jpg"
+                alt="Ganpati"
+                style={{ width: "90px", height: "100px", borderRadius: "50%" }}
+              />
+            </div>
 
-          {([
-            ["नाव", "नाव"],
-            ["जन्म तारीख", "जन्मतारीख"],
-            ["जन्म वेळ", "जन्मवेळ"],
-            ["जन्म स्थळ", "जन्मस्थळ"],
-            ["जन्म वार", "जन्मवार"],
-            ["शिक्षण", "शिक्षण"],
-            ["वर्ण", "वर्ण"],
-            ["कुळ", "कुळ"],
-            ["गोत्र", "गोत्र"],
-            ["मामाकुळ", "मामाकुळ"],
-            ["मोबाईल नंबर", "मोबाईल"],
-            ["वडिलांचे नाव", "वडील"],
-            ["आईचे नाव", "आई"],
-            ["आजीचे नाव", "आजी"],
-            ["आजोबांचे नाव", "आजोबा"]
-          ] as [string, keyof BiodataState][]).map(([label, key]) => (
+            <h2 style={{ textAlign: "center" }}>मराठी बायोडाटा फॉर्म</h2>
+
+            {[
+              ["नाव", "नाव"],
+              ["जन्म तारीख", "जन्मतारीख"],
+              ["जन्म वेळ", "जन्मवेळ"],
+              ["जन्म स्थळ", "जन्मस्थळ"],
+              ["जन्म वार", "जन्मवार"],
+              ["शिक्षण", "शिक्षण"],
+              ["वर्ण", "वर्ण"],
+              ["कुळ", "कुळ"],
+              ["गोत्र", "गोत्र"],
+              ["मामाकुळ", "मामाकुळ"],
+              ["मोबाईल नंबर", "मोबाईल"],
+              ["वडिलांचे नाव", "वडील"],
+              ["आईचे नाव", "आई"],
+              ["आजीचे नाव", "आजी"],
+              ["आजोबांचे नाव", "आजोबा"]
+            ].map(([label, key]) => (
+              <input
+                key={key}
+                placeholder={label}
+                value={data[key as keyof Biodata]}
+                onChange={(e) =>
+                  handleChange(key as keyof Biodata, e.target.value)
+                }
+                style={inputStyle}
+              />
+            ))}
+
+            {/* KAKA / KAKU */}
+            <div style={sectionStyle}>
+              <strong>काका / काकू</strong>
+              {data.काका.map((pair, i) => (
+                <div key={i}>
+                  <input
+                    placeholder="काका नाव"
+                    value={pair.काका}
+                    onChange={(e) =>
+                      handleKakaKakuChange(i, "काका", e.target.value)
+                    }
+                    style={inputStyle}
+                  />
+                  <input
+                    placeholder="काकू नाव"
+                    value={pair.काकू}
+                    onChange={(e) =>
+                      handleKakaKakuChange(i, "काकू", e.target.value)
+                    }
+                    style={inputStyle}
+                  />
+                </div>
+              ))}
+              <button onClick={addKakaKaku}>➕ आणखी जोडा</button>
+            </div>
+
+            {/* BAHIN / PAHUNE */}
+            <div style={sectionStyle}>
+              <strong>बहिण / पाहुणे</strong>
+              {data.बहिणी.map((pair, i) => (
+                <div key={i}>
+                  <input
+                    placeholder="बहिणीचे नाव"
+                    value={pair.बहिण}
+                    onChange={(e) =>
+                      handleBahiniPahuneChange(i, "बहिण", e.target.value)
+                    }
+                    style={inputStyle}
+                  />
+                  <input
+                    placeholder="पाहुण्याचे नाव"
+                    value={pair.पाहुणे}
+                    onChange={(e) =>
+                      handleBahiniPahuneChange(i, "पाहुणे", e.target.value)
+                    }
+                    style={inputStyle}
+                  />
+                </div>
+              ))}
+              <button onClick={addBahiniPahune}>➕ आणखी जोडा</button>
+            </div>
+
+            {["भाऊ", "मामा", "इतर"].map((section) => (
+              <div key={section} style={sectionStyle}>
+                <strong>{section}</strong>
+                {data[section as "भाऊ" | "मामा" | "इतर"].map((val, i) => (
+                  <input
+                    key={i}
+                    value={val}
+                    placeholder={`${section} नाव`}
+                    onChange={(e) =>
+                      handleArrayChange(
+                        section as "भाऊ" | "मामा" | "इतर",
+                        i,
+                        e.target.value
+                      )
+                    }
+                    style={inputStyle}
+                  />
+                ))}
+                <button onClick={() => addField(section as "भाऊ" | "मामा" | "इतर")}>
+                  ➕ आणखी जोडा
+                </button>
+              </div>
+            ))}
+
             <input
-              key={String(key)}
-              placeholder={label}
-              value={data[key] as string}
-              onChange={(e) => handleChange(key, e.target.value as any)}
+              placeholder="संपूर्ण पत्ता"
+              value={data.पत्ता}
+              onChange={(e) => handleChange("पत्ता", e.target.value)}
               style={inputStyle}
             />
-          ))}
 
-          {/* KAKA / KAKU */}
-          <div style={sectionStyle}>
-            <strong>काका / काकू</strong>
-            {data.काका.map((pair, i) => (
-              <div key={i}>
-                <input
-                  placeholder="काका नाव"
-                  value={pair.काका}
-                  onChange={(e) =>
-                    handleKakaKakuChange(i, "काका", e.target.value)
-                  }
-                  style={inputStyle}
-                />
-                <input
-                  placeholder="काकू नाव"
-                  value={pair.काकू}
-                  onChange={(e) =>
-                    handleKakaKakuChange(i, "काकू", e.target.value)
-                  }
-                  style={inputStyle}
-                />
-              </div>
-            ))}
-            <button onClick={addKakaKaku}>➕ आणखी जोडा</button>
+            <button
+              onClick={() => setShowPreview(true)}
+              style={{
+                width: "100%",
+                padding: "12px",
+                marginTop: "10px",
+                background: "#d63384",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px"
+              }}
+            >
+              बायोडाटा तयार करा
+            </button>
           </div>
-
-          {/* BAHINI / PAHUNE */}
-          <div style={sectionStyle}>
-            <strong>बहिण / पाहुणे</strong>
-            {data.बहिणी.map((pair, i) => (
-              <div key={i}>
-                <input
-                  placeholder="बहिणीचे नाव"
-                  value={pair.बहिण}
-                  onChange={(e) =>
-                    handleBahiniPahuneChange(i, "बहिण", e.target.value)
-                  }
-                  style={inputStyle}
-                />
-                <input
-                  placeholder="पाहुण्याचे नाव"
-                  value={pair.पाहुणे}
-                  onChange={(e) =>
-                    handleBahiniPahuneChange(i, "पाहुणे", e.target.value)
-                  }
-                  style={inputStyle}
-                />
-              </div>
-            ))}
-            <button onClick={addBahiniPahune}>➕ आणखी जोडा</button>
-          </div>
-
-          {/* SIMPLE ARRAYS */}
-          {(["भाऊ", "मामा", "इतर"] as SimpleArrayKeys[]).map((section) => (
-            <div key={section} style={sectionStyle}>
-              <strong>{section}</strong>
-              {data[section].map((val, i) => (
-                <input
-                  key={i}
-                  value={val}
-                  onChange={(e) =>
-                    handleArrayChange(section, i, e.target.value)
-                  }
-                  style={inputStyle}
-                />
-              ))}
-              <button onClick={() => addField(section)}>➕ आणखी जोडा</button>
-            </div>
-          ))}
-
-          <input
-            placeholder="संपूर्ण पत्ता"
-            value={data.पत्ता}
-            onChange={(e) => handleChange("पत्ता", e.target.value)}
-            style={inputStyle}
-          />
-
-          <button
-            onClick={() => setShowPreview(true)}
-            style={{ width: "100%", padding: "12px", marginTop: "10px" }}
-          >
-            बायोडाटा तयार करा
-          </button>
         </div>
       )}
 
-      {/* PREVIEW */}
       {showPreview && (
         <>
-          <div id="biodata-preview" style={{ padding: "20px" }}>
-            {(Object.entries(data) as [
-              keyof BiodataState,
-              BiodataState[keyof BiodataState]
-            ][]).map(([key, val]) =>
-              Array.isArray(val) ? (
-                key === "काका" ? (
-                  (val as KakaKaku[]).map((p, i) => (
-                    <p key={i}>
-                      <b>काका:</b> {p.काका} | <b>काकू:</b> {p.काकू}
-                    </p>
-                  ))
-                ) : key === "बहिणी" ? (
-                  (val as BahiniPahune[]).map((p, i) => (
-                    <p key={i}>
-                      <b>बहिण:</b> {p.बहिण} | <b>पाहुणे:</b> {p.पाहुणे}
-                    </p>
-                  ))
-                ) : (
-                  (val as string[]).map(
-                    (v, i) =>
-                      v && (
+          <div
+            id="biodata-preview"
+            style={{
+              maxWidth: "780px",
+              margin: "20px auto",
+              padding: "25px",
+              border: "10px solid #f9c2d7",
+              backgroundImage: "url('./src/Biodata/flower.jpg')",
+              backgroundSize: "cover"
+            }}
+          >
+            <div style={{ background: "rgba(255,255,255,0.6)", padding: "20px" }}>
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src="./src/Biodata/ganpati.jpg"
+                  alt="Ganpati"
+                  style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+                />
+              </div>
+
+              <h4 style={{ textAlign: "center" }}>|| श्री गणेशाय नम: ||</h4>
+              <h2 style={{ textAlign: "center" }}>बायोडाटा</h2>
+
+              {Object.entries(data).map(([key, val]) =>
+                Array.isArray(val)
+                  ? key === "काका"
+                    ? val.map((p, i) => (
                         <p key={i}>
-                          <b>{key}:</b> {v}
+                          <b>काका:</b> {p.काका} | <b>काकू:</b> {p.काकू}
                         </p>
+                      ))
+                    : key === "बहिणी"
+                    ? val.map((p, i) => (
+                        <p key={i}>
+                          <b>बहिण:</b> {p.बहिण} | <b>पाहुणे:</b> {p.पाहुणे}
+                        </p>
+                      ))
+                    : val.map(
+                        (v, i) => v && <p key={i}><b>{key}:</b> {v}</p>
                       )
-                  )
-                )
-              ) : (
-                <p key={String(key)}>
-                  <b>{key}:</b> {val}
+                  : <p key={key}><b>{key}:</b> {val}</p>
+              )}
+
+              {data.पत्ता && (
+                <p>
+                  <b>पत्ता:</b> {data.पत्ता}
                 </p>
-              )
-            )}
+              )}
+            </div>
           </div>
 
           <div style={{ textAlign: "center" }}>
