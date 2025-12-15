@@ -150,7 +150,7 @@ export default function BiodataFormMarathi() {
             margin: "auto",
             padding: "20px",
             borderRadius: "12px",
-            backgroundImage: "url('./public/icons/flower.jpg')",
+            backgroundImage: "url('/icons/flower.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
@@ -160,7 +160,7 @@ export default function BiodataFormMarathi() {
             {/* GANPATI */}
             <div style={{ textAlign: "center", marginBottom: "10px" }}>
               <img
-                src="../public/icons/ganpati.jpg"
+src="/icons/ganpati.jpg" 
                 alt="Ganpati"
                 style={{ width: "90px", height: "100px", borderRadius: "50%" }}
               />
@@ -275,7 +275,7 @@ export default function BiodataFormMarathi() {
               margin: "20px auto",
               padding: "25px",
               border: "10px solid #f9c2d7",
-              backgroundImage: "url('../public/icons/flower.jpg')",
+              backgroundImage: "url('/icons/flower.jpg')",
               backgroundSize: "cover"
             }}
           >
@@ -284,7 +284,7 @@ export default function BiodataFormMarathi() {
               {/* GANPATI */}
               <div style={{ textAlign: "center", marginBottom: "8px" }}>
                 <img
-                  src="./public/icons/ganpati.jpg"
+                  src="/icons/ganpati.jpg"
                   alt="Ganpati"
                   style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                 />
