@@ -160,7 +160,7 @@ export default function BiodataFormMarathi() {
             {/* GANPATI */}
             <div style={{ textAlign: "center", marginBottom: "10px" }}>
               <img
-                src="./src/Biodata/ganpati.jpg"
+                src="../public/ganpati.jpg"
                 alt="Ganpati"
                 style={{ width: "90px", height: "100px", borderRadius: "50%" }}
               />
@@ -284,7 +284,7 @@ export default function BiodataFormMarathi() {
               {/* GANPATI */}
               <div style={{ textAlign: "center", marginBottom: "8px" }}>
                 <img
-                  src="./src/Biodata/ganpati.jpg"
+                  src="./public/ganpati.jpg"
                   alt="Ganpati"
                   style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                 />
